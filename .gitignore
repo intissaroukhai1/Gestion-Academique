@@ -1,0 +1,22 @@
+# Angular
+GestionAcademic-frontend/node_modules/
+GestionAcademic-frontend/.angular/
+GestionAcademic-frontend/dist/
+
+# Spring Boot
+GestionAcademic-backend/target/
+
+# IntelliJ / VS Code
+.idea/
+.vscode/
+*.iml
+
+# Logs
+*.log
+
+# Upload local photos
+GestionAcademic-backend/uploads/
+
+# OS
+.DS_Store
+Thumbs.db
