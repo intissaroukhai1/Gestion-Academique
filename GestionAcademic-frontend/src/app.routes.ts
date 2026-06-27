@@ -5,6 +5,7 @@ import { Documentation } from './app/pages/documentation/documentation';
 import { Landing } from './app/pages/landing/landing';
 import { Notfound } from './app/pages/notfound/notfound';
 
+
 export const appRoutes: Routes = [
       {
         path: '',
@@ -19,6 +20,25 @@ export const appRoutes: Routes = [
                         .then(m => m.StudentListComponent)
             },
 
+
+  {
+        path: 'filieres',
+        loadComponent: () =>
+          import('./app/pages/filieres/filiere-list.component')
+            .then(m => m.FiliereListComponent)
+      },
+      {
+    path: 'matieres',
+    loadComponent: () =>
+        import('./app/pages/matieres/matiere-list.component')
+            .then(m => m.MatiereListComponent)
+},
+{
+    path: 'notes',
+    loadComponent: () =>
+        import('./app/pages/notes/note-list.component')
+            .then(m => m.NoteListComponent)
+},
             { path: 'uikit', loadChildren: () => import('./app/pages/uikit/uikit.routes') },
             { path: 'documentation', component: Documentation },
             { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') }

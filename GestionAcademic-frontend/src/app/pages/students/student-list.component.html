@@ -73,11 +73,16 @@
 
             <label>
                 <span>Filière *</span>
-                <input
-                    name="program"
-                    [(ngModel)]="student.program"
-                    placeholder="Génie logiciel"
-                    required>
+               <p-select
+    id="filiere"
+    name="filiere"
+    [(ngModel)]="student.filiere"
+    [options]="filieres"
+    optionLabel="nom"
+    placeholder="Choisir une filière"
+    class="w-full"
+    appendTo="body"
+></p-select>
             </label>
 
             <label>
@@ -169,8 +174,8 @@
                         </td>
 
                         <td>
-                            {{ item.program }}
-                        </td>
+                            {{ item.filiere?.nom }}
+                        </td>   
 
                         <td>
                             {{ item.studyLevel }}
@@ -275,8 +280,7 @@
 
                     <div class="detail-item">
                         <span>Filière</span>
-                        <strong>{{ selectedStudent.program }}</strong>
-                    </div>
+                  <strong>{{ selectedStudent.filiere?.nom || 'Non renseignée' }}</strong>                    </div>
 
                     <div class="detail-item">
                         <span>Niveau d’étude</span>

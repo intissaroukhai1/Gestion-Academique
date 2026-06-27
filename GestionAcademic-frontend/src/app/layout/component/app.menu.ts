@@ -34,7 +34,22 @@ export class AppMenu {
                 label: 'Étudiants',
                 icon: 'pi pi-fw pi-users',
                 routerLink: ['/students']
-            }
+            },
+             {
+            label: 'Filières',
+            icon: 'pi pi-fw pi-sitemap',
+            routerLink: ['/filieres']
+        },
+         {
+            label: 'Matières',
+            icon: 'pi pi-fw pi-book',
+            routerLink: ['/matieres']
+        },
+        {
+    label: 'Notes',
+    icon: 'pi pi-fw pi-star',
+    routerLink: ['/notes']
+}
         ]
     },
             {

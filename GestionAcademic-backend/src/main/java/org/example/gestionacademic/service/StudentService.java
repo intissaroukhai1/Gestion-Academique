@@ -62,7 +62,7 @@ public class StudentService {
         student.setStudentIdentifier(newStudent.getStudentIdentifier());
         student.setEmail(newStudent.getEmail());
         student.setPhone(newStudent.getPhone());
-        student.setProgram(newStudent.getProgram());
+        student.setFiliere(newStudent.getFiliere());
         student.setStudyLevel(newStudent.getStudyLevel());
         student.setPhoto(newStudent.getPhoto());
         student.setAddress(newStudent.getAddress());

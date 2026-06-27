@@ -1,3 +1,5 @@
+import { Filiere } from '../filieres/filiere.model';
+
 export interface Student {
     id?: number;
     lastName: string;
@@ -6,8 +8,9 @@ export interface Student {
     studentIdentifier: string;
     email: string;
     phone: string;
-    program: string;
+    program?: string;
     studyLevel: string;
     photo: string;
     address: string;
+    filiere: Filiere | null;
 }

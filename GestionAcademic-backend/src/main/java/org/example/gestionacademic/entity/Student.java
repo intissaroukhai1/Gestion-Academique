@@ -3,6 +3,7 @@ package org.example.gestionacademic.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "students")
@@ -36,9 +37,10 @@ public class Student {
     @Column(length = 20)
     private String phone;
 
-    @NotBlank(message = "La filière est obligatoire")
-    @Column(nullable = false, length = 100)
-    private String program;
+    @NotNull(message = "La filière est obligatoire")
+    @ManyToOne
+    @JoinColumn(name = "filiere_id", nullable = false)
+    private Filiere filiere;
 
     @NotBlank(message = "Le niveau d'étude est obligatoire")
     @Column(nullable = false, length = 50)
@@ -55,7 +57,7 @@ public class Student {
 
     public Student(String lastName, String firstName, String cin,
                    String studentIdentifier, String email, String phone,
-                   String program, String studyLevel, String photo,
+                   Filiere filiere, String studyLevel, String photo,
                    String address) {
         this.lastName = lastName;
         this.firstName = firstName;
@@ -63,7 +65,7 @@ public class Student {
         this.studentIdentifier = studentIdentifier;
         this.email = email;
         this.phone = phone;
-        this.program = program;
+        this.filiere = filiere;
         this.studyLevel = studyLevel;
         this.photo = photo;
         this.address = address;
@@ -125,12 +127,12 @@ public class Student {
         this.phone = phone;
     }
 
-    public String getProgram() {
-        return program;
+    public Filiere getFiliere() {
+        return filiere;
     }
 
-    public void setProgram(String program) {
-        this.program = program;
+    public void setFiliere(Filiere filiere) {
+        this.filiere = filiere;
     }
 
     public String getStudyLevel() {

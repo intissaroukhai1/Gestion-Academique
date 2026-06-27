@@ -1,0 +1,230 @@
+<p-fluid>
+    <div class="flex flex-col gap-8">
+        <div class="card flex flex-col gap-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <div class="font-semibold text-xl">Gestion des notes</div>
+                </div>
+
+                <p-button
+                    label="Actualiser"
+                    icon="pi pi-refresh"
+                    severity="secondary"
+                    (onClick)="refreshNotes()"
+                ></p-button>
+            </div>
+
+            <div class="grid grid-cols-12 gap-4">
+                <div class="col-span-12 md:col-span-4 flex flex-col gap-2">
+                    <label for="student">Étudiant *</label>
+                    <p-select
+                        id="student"
+                        name="student"
+                        [(ngModel)]="note.student"
+                        [options]="students"
+                        optionLabel="studentIdentifier"
+                        placeholder="Choisir un étudiant"
+                        class="w-full"
+                        appendTo="body"
+                    >
+                        <ng-template pTemplate="item" let-student>
+                            {{ student.firstName }} {{ student.lastName }} - {{ student.studentIdentifier }}
+                        </ng-template>
+
+                        <ng-template pTemplate="selectedItem" let-student>
+                            {{ student?.firstName }} {{ student?.lastName }}
+                        </ng-template>
+                    </p-select>
+                </div>
+
+                <div class="col-span-12 md:col-span-4 flex flex-col gap-2">
+                    <label for="matiere">Matière *</label>
+                    <p-select
+                        id="matiere"
+                        name="matiere"
+                        [(ngModel)]="note.matiere"
+                        [options]="matieres"
+                        optionLabel="nom"
+                        placeholder="Choisir une matière"
+                        class="w-full"
+                        appendTo="body"
+                    ></p-select>
+                </div>
+
+                <div class="col-span-12 md:col-span-4 flex flex-col gap-2">
+                    <label for="typeEvaluation">Type *</label>
+                    <p-select
+                        id="typeEvaluation"
+                        name="typeEvaluation"
+                        [(ngModel)]="note.typeEvaluation"
+                        [options]="typeEvaluations"
+                        optionLabel="label"
+                        optionValue="value"
+                        placeholder="Type d'évaluation"
+                        class="w-full"
+                        appendTo="body"
+                    ></p-select>
+                </div>
+
+                <div class="col-span-12 md:col-span-4 flex flex-col gap-2">
+                    <label for="valeur">Note /20 *</label>
+                    <input
+                        pInputText
+                        id="valeur"
+                        type="number"
+                        min="0"
+                        max="20"
+                        [(ngModel)]="note.valeur"
+                        name="valeur"
+                        placeholder="Ex: 16"
+                    />
+                </div>
+
+                <div class="col-span-12 md:col-span-4 flex flex-col gap-2">
+                    <label for="dateEvaluation">Date *</label>
+                    <input
+                        pInputText
+                        id="dateEvaluation"
+                        type="date"
+                        [(ngModel)]="note.dateEvaluation"
+                        name="dateEvaluation"
+                    />
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-2">
+                <p-button
+                    label="Annuler"
+                    icon="pi pi-times"
+                    severity="secondary"
+                    (onClick)="resetForm()"
+                ></p-button>
+
+                <p-button
+                    [label]="editMode ? 'Modifier' : 'Ajouter'"
+                    [icon]="editMode ? 'pi pi-pencil' : 'pi pi-plus'"
+                    (onClick)="saveNote()"
+                ></p-button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="font-semibold text-xl mb-4">Liste des notes</div>
+<div class="grid grid-cols-12 gap-4 mb-4">
+    <div class="col-span-12 md:col-span-4 flex flex-col gap-2">
+        <label>Filtrer par étudiant</label>
+        <p-select
+            [(ngModel)]="selectedStudentFilter"
+            [options]="students"
+            optionLabel="studentIdentifier"
+            placeholder="Tous les étudiants"
+            class="w-full"
+            appendTo="body"
+            (onChange)="applyFilters()"
+        >
+            <ng-template pTemplate="item" let-student>
+                {{ student.firstName }} {{ student.lastName }} - {{ student.studentIdentifier }}
+            </ng-template>
+
+            <ng-template pTemplate="selectedItem" let-student>
+                {{ student?.firstName }} {{ student?.lastName }}
+            </ng-template>
+        </p-select>
+    </div>
+
+    <div class="col-span-12 md:col-span-4 flex flex-col gap-2">
+        <label>Filtrer par matière</label>
+        <p-select
+            [(ngModel)]="selectedMatiereFilter"
+            [options]="matieres"
+            optionLabel="nom"
+            placeholder="Toutes les matières"
+            class="w-full"
+            appendTo="body"
+            (onChange)="applyFilters()"
+        ></p-select>
+    </div>
+
+    <div class="col-span-12 md:col-span-3 flex flex-col gap-2">
+        <label>Filtrer par type</label>
+        <p-select
+            [(ngModel)]="selectedTypeFilter"
+            [options]="typeEvaluations"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Tous les types"
+            class="w-full"
+            appendTo="body"
+            (onChange)="applyFilters()"
+        ></p-select>
+    </div>
+
+    <div class="col-span-12 md:col-span-1 flex items-end">
+        <p-button
+            icon="pi pi-filter-slash"
+            severity="secondary"
+            (onClick)="resetFilters()"
+        ></p-button>
+    </div>
+</div>
+            <p-table
+                [value]="filteredNotes"
+                [paginator]="true"
+                [rows]="5"
+                [tableStyle]="{ 'min-width': '70rem' }"
+                responsiveLayout="scroll"
+            >
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>ID</th>
+                        <th>Étudiant</th>
+                        <th>Matière</th>
+                        <th>Type</th>
+                        <th>Note</th>
+                        <th>Date</th>
+                        <th style="width: 180px">Actions</th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-n>
+                    <tr>
+                        <td>{{ n.id }}</td>
+                        <td>{{ n.student?.firstName }} {{ n.student?.lastName }}</td>
+                        <td>{{ n.matiere?.nom }}</td>
+                        <td>{{ n.typeEvaluation }}</td>
+                        <td>{{ n.valeur }}/20</td>
+                        <td>{{ n.dateEvaluation }}</td>
+                        <td>
+                            <div class="flex gap-2">
+                                <p-button
+                                    icon="pi pi-pencil"
+                                    severity="info"
+                                    [rounded]="true"
+                                    [text]="true"
+                                    (onClick)="editNote(n)"
+                                ></p-button>
+
+                                <p-button
+                                    icon="pi pi-trash"
+                                    severity="danger"
+                                    [rounded]="true"
+                                    [text]="true"
+                                    (onClick)="deleteNote(n.id!)"
+                                ></p-button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="7" class="text-center">
+                            Aucune note trouvée.
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div> 
+
+</p-fluid>
