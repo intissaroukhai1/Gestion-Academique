@@ -39,6 +39,18 @@ export const appRoutes: Routes = [
         import('./app/pages/notes/note-list.component')
             .then(m => m.NoteListComponent)
 },
+{
+    path: 'absences',
+    loadComponent: () =>
+        import('./app/pages/absences/absence-list.component')
+            .then(m => m.AbsenceListComponent)
+},
+{
+    path: 'bulletins',
+    loadComponent: () =>
+        import('./app/pages/bulletins/bulletin.component')
+            .then(m => m.BulletinComponent)
+},
             { path: 'uikit', loadChildren: () => import('./app/pages/uikit/uikit.routes') },
             { path: 'documentation', component: Documentation },
             { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') }

@@ -49,9 +49,20 @@ export class AppMenu {
     label: 'Notes',
     icon: 'pi pi-fw pi-star',
     routerLink: ['/notes']
+},
+{
+    label: 'Absences',
+    icon: 'pi pi-fw pi-calendar-times',
+    routerLink: ['/absences']
+},
+{
+    label: 'Bulletins',
+    icon: 'pi pi-fw pi-file',
+    routerLink: ['/bulletins']
 }
         ]
     },
+    
             {
                 label: 'UI Components',
                 items: [

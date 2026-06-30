@@ -1,0 +1,152 @@
+<div class="dashboard-page">
+
+    <div class="dashboard-hero">
+        <div>
+            <span class="eyebrow">Gestion académique</span>
+            <h1>Statistiques et Reporting</h1>
+            <p>
+                Tableau de bord dynamique pour suivre les étudiants, les filières,
+                les notes, les absences et la progression académique.
+            </p>
+        </div>
+
+        <p-button
+            label="Actualiser"
+            icon="pi pi-refresh"
+            severity="secondary"
+            [loading]="loading"
+            (onClick)="loadReporting()"
+        ></p-button>
+    </div>
+
+    <div class="kpi-grid">
+        <div class="modern-card kpi-card" *ngFor="let card of cards">
+            <div class="kpi-content">
+                <div>
+                    <span class="kpi-label">{{ card.label }}</span>
+                    <h2>{{ card.value }}</h2>
+                    <p>{{ card.subtitle }}</p>
+                </div>
+
+                <div class="kpi-icon" [ngClass]="card.color">
+                    <i [class]="card.icon"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="charts-grid">
+        <div class="modern-card chart-card">
+            <div class="card-header">
+                <div>
+                    <h3>Nombre d'étudiants par filière</h3>
+                    <p>Répartition des étudiants selon les filières</p>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <p-chart
+                    type="bar"
+                    [data]="studentsByFiliereChart"
+                    [options]="chartOptions"
+                ></p-chart>
+            </div>
+        </div>
+
+        <div class="modern-card chart-card">
+            <div class="card-header">
+                <div>
+                    <h3>Moyenne générale par filière</h3>
+                    <p>Comparaison des performances académiques</p>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <p-chart
+                    type="bar"
+                    [data]="moyenneByFiliereChart"
+                    [options]="chartOptions"
+                ></p-chart>
+            </div>
+        </div>
+
+        <div class="modern-card chart-card">
+            <div class="card-header">
+                <div>
+                    <h3>Statistiques des absences</h3>
+                    <p>Absences enregistrées par matière</p>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <p-chart
+                    type="doughnut"
+                    [data]="absencesByMatiereChart"
+                ></p-chart>
+            </div>
+        </div>
+
+        <div class="modern-card chart-card">
+            <div class="card-header">
+                <div>
+                    <h3>Suivi progression académique</h3>
+                    <p>Évolution des moyennes par étudiant</p>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <p-chart
+                    type="line"
+                    [data]="progressionChart"
+                    [options]="chartOptions"
+                ></p-chart>
+            </div>
+        </div>
+    </div>
+
+    <div class="modern-card table-card">
+        <div class="card-header">
+            <div>
+                <h3>Tableau de progression académique</h3>
+                <p>Liste des étudiants avec moyenne et résultat</p>
+            </div>
+        </div>
+
+        <div class="modern-table-wrapper">
+            <table class="modern-table">
+                <thead>
+                    <tr>
+                        <th>Étudiant</th>
+                        <th>Moyenne</th>
+                        <th>Résultat</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let item of reporting?.progressionAcademique">
+                        <td>
+                            <div class="student-cell">
+                                <div class="avatar">
+                                    {{ item.student.charAt(0) }}
+                                </div>
+                                <span>{{ item.student }}</span>
+                            </div>
+                        </td>
+
+                        <td>
+                            <strong>{{ item.moyenne }}/20</strong>
+                        </td>
+
+                        <td>
+                            <p-tag
+                                [value]="item.resultat"
+                                [severity]="getSeverity(item.resultat)"
+                            ></p-tag>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

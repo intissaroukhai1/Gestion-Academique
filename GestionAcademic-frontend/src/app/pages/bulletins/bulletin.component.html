@@ -1,0 +1,162 @@
+<p-fluid>
+    <div class="flex flex-col gap-8">
+
+        <div class="card flex flex-col gap-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <div class="font-semibold text-xl">Bulletin étudiant</div>
+                    <p class="text-surface-500 m-0">
+                        Sélectionnez un étudiant pour générer son bulletin.
+                    </p>
+                </div>
+            </div>
+
+            @if (errorMessage) {
+                <div class="p-4 rounded bg-red-100 text-red-700">
+                    {{ errorMessage }}
+                </div>
+            }
+
+            <div class="grid grid-cols-12 gap-4">
+                <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+                    <label for="student">Étudiant *</label>
+
+                    <p-select
+                        id="student"
+                        name="student"
+                        [(ngModel)]="selectedStudent"
+                        [options]="students"
+                        optionLabel="studentIdentifier"
+                        placeholder="Choisir un étudiant"
+                        class="w-full"
+                        appendTo="body"
+                    >
+                        <ng-template pTemplate="item" let-student>
+                            {{ student.firstName }} {{ student.lastName }} - {{ student.studentIdentifier }}
+                        </ng-template>
+
+                        <ng-template pTemplate="selectedItem" let-student>
+                            {{ student?.firstName }} {{ student?.lastName }}
+                        </ng-template>
+                    </p-select>
+                </div>
+
+                <div class="col-span-12 md:col-span-6 flex items-end gap-2">
+                    <p-button
+                        label="Générer le bulletin"
+                        icon="pi pi-file"
+                        (onClick)="generateBulletin()"
+                    ></p-button>
+
+                    <p-button
+                        label="Imprimer"
+                        icon="pi pi-print"
+                        severity="secondary"
+                        [disabled]="!bulletin"
+                        (onClick)="printBulletin()"
+                    ></p-button>
+                </div>
+            </div>
+        </div>
+
+        @if (bulletin) {
+            <div class="card bulletin-zone">
+
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 class="m-0">Bulletin de notes</h2>
+                        <p class="text-surface-500 m-0">Année universitaire 2025/2026</p>
+                    </div>
+
+                    <p-tag
+                        [value]="bulletin.resultat"
+                        [severity]="getResultSeverity(bulletin.resultat)"
+                    ></p-tag>
+                </div>
+
+                <div class="grid grid-cols-12 gap-4 mb-6">
+                    <div class="col-span-12 md:col-span-6">
+                        <strong>Nom complet :</strong> {{ bulletin.nomComplet }}
+                    </div>
+
+                    <div class="col-span-12 md:col-span-6">
+                        <strong>Identifiant :</strong> {{ bulletin.identifiant }}
+                    </div>
+
+                    <div class="col-span-12 md:col-span-6">
+                        <strong>CIN :</strong> {{ bulletin.cin }}
+                    </div>
+
+                    <div class="col-span-12 md:col-span-6">
+                        <strong>Email :</strong> {{ bulletin.email }}
+                    </div>
+
+                    <div class="col-span-12 md:col-span-6">
+                        <strong>Filière :</strong> {{ bulletin.filiere }}
+                    </div>
+
+                    <div class="col-span-12 md:col-span-6">
+                        <strong>Niveau :</strong> {{ bulletin.niveau }}
+                    </div>
+                </div>
+
+                <p-table
+                    [value]="bulletin.notes"
+                    [tableStyle]="{ 'min-width': '50rem' }"
+                    responsiveLayout="scroll"
+                >
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Matière</th>
+                            <th>Coefficient</th>
+                            <th>Type</th>
+                            <th>Note</th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-n>
+                        <tr>
+                            <td>{{ n.matiere }}</td>
+                            <td>{{ n.coefficient }}</td>
+                            <td>{{ n.typeEvaluation }}</td>
+                            <td>{{ n.note }}/20</td>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="4" class="text-center">
+                                Aucune note trouvée pour cet étudiant.
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+
+                <div class="grid grid-cols-12 gap-4 mt-6">
+                    <div class="col-span-12 md:col-span-4">
+                        <div class="summary-card">
+                            <span>Moyenne générale</span>
+                            <strong>{{ bulletin.moyenne }}/20</strong>
+                        </div>
+                    </div>
+
+                    <div class="col-span-12 md:col-span-4">
+                        <div class="summary-card">
+                            <span>Total absences</span>
+                            <strong>{{ bulletin.totalAbsences }}</strong>
+                        </div>
+                    </div>
+
+                    <div class="col-span-12 md:col-span-4">
+                        <div class="summary-card">
+                            <span>Résultat</span>
+                            <strong>{{ bulletin.resultat }}</strong>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        }
+
+    </div>
+</p-fluid>

@@ -1,0 +1,34 @@
+:host {
+    display: block;
+}
+
+.summary-card {
+    border: 1px solid var(--surface-border);
+    border-radius: 12px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.summary-card span {
+    color: var(--text-color-secondary);
+}
+
+.summary-card strong {
+    font-size: 1.5rem;
+}
+
+@media print {
+    app-menu,
+    .layout-sidebar,
+    .layout-topbar,
+    p-button {
+        display: none !important;
+    }
+
+    .bulletin-zone {
+        box-shadow: none !important;
+        border: none !important;
+    }
+}
