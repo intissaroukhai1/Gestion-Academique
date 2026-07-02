@@ -51,6 +51,12 @@ export const appRoutes: Routes = [
         import('./app/pages/bulletins/bulletin.component')
             .then(m => m.BulletinComponent)
 },
+{
+    path: 'factures',
+    loadComponent: () =>
+        import('./app/pages/factures/facture-list.component')
+            .then(m => m.FactureListComponent)
+},
             { path: 'uikit', loadChildren: () => import('./app/pages/uikit/uikit.routes') },
             { path: 'documentation', component: Documentation },
             { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') }

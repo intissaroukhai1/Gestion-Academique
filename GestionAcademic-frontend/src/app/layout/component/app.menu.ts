@@ -59,6 +59,11 @@ export class AppMenu {
     label: 'Bulletins',
     icon: 'pi pi-fw pi-file',
     routerLink: ['/bulletins']
+},
+{
+    label: 'Factures',
+    icon: 'pi pi-fw pi-file-edit',
+    routerLink: ['/factures']
 }
         ]
     },

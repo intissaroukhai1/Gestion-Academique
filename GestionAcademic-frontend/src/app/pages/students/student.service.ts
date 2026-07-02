@@ -29,4 +29,7 @@ export class StudentService {
 
     return this.http.post<Student>(`${this.apiUrl}/${id}/photo`, formData);
 }
+getStudents(): Observable<Student[]> {
+    return this.http.get<Student[]>(this.apiUrl);
+}
 }
