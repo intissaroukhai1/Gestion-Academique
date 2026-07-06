@@ -64,11 +64,16 @@ export class AppMenu {
     label: 'Factures',
     icon: 'pi pi-fw pi-file-edit',
     routerLink: ['/factures']
+},
+{
+    label: 'Paiements',
+    icon: 'pi pi-fw pi-credit-card',
+    routerLink: ['/paiements']
 }
         ]
     },
     
-            {
+          /*  {
                 label: 'UI Components',
                 items: [
                     { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
@@ -88,7 +93,7 @@ export class AppMenu {
                     { label: 'Misc', icon: 'pi pi-fw pi-circle', routerLink: ['/uikit/misc'] }
                 ]
             },
-            {
+           /* {
                 label: 'Pages',
                 icon: 'pi pi-fw pi-briefcase',
                 path: '/pages',
@@ -137,7 +142,7 @@ export class AppMenu {
                     }
                 ]
             },
-            {
+            /*{
                 label: 'Hierarchy',
                 path: '/hierarchy',
                 items: [
@@ -203,7 +208,7 @@ export class AppMenu {
                         target: '_blank'
                     }
                 ]
-            }
+            }*/
         ];
     }
 }

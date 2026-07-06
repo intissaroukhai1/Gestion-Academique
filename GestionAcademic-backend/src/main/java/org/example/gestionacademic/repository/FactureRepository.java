@@ -13,4 +13,5 @@ public interface FactureRepository extends JpaRepository<Facture, Long> {
     List<Facture> findByStudentId(Long studentId);
 
     List<Facture> findByStatutPaiement(String statutPaiement);
+    long countByStatutPaiement(String statutPaiement);
 }

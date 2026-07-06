@@ -1,0 +1,190 @@
+<div class="paiement-page">
+    <div class="page-header">
+        <div>
+            <h2>Gestion des paiements</h2>
+            <p>Suivi des paiements, historique et mise à jour automatique des factures</p>
+        </div>
+
+        <p-button
+            label="Actualiser"
+            icon="pi pi-refresh"
+            severity="secondary"
+            (onClick)="loadPaiements()">
+        </p-button>
+    </div>
+
+    <div class="grid grid-cols-12 gap-6">
+        <div class="col-span-12 lg:col-span-4">
+            <div class="card form-card">
+                <h3>{{ editMode ? 'Modifier paiement' : 'Nouveau paiement' }}</h3>
+
+                <p-fluid>
+                    <div class="field">
+                        <label>Étudiant</label>
+                        <p-select
+                            [(ngModel)]="paiement.student"
+                            [options]="students"
+                            optionLabel="firstName"
+                            placeholder="Choisir un étudiant"
+                            appendTo="body"
+                            class="w-full">
+
+                            <ng-template let-student pTemplate="item">
+                                {{ student.firstName }} {{ student.lastName }}
+                            </ng-template>
+
+                            <ng-template let-student pTemplate="selectedItem">
+                                {{ student?.firstName }} {{ student?.lastName }}
+                            </ng-template>
+                        </p-select>
+                    </div>
+
+                    <div class="field">
+                        <label>Facture</label>
+                        <p-select
+                            [(ngModel)]="paiement.facture"
+                            [options]="factures"
+                            optionLabel="numeroFacture"
+                            placeholder="Choisir une facture"
+                            appendTo="body"
+                            class="w-full">
+
+                            <ng-template let-facture pTemplate="item">
+                                {{ facture.numeroFacture }} - {{ facture.montant }} € -
+                                {{ facture.statutPaiement }}
+                            </ng-template>
+
+                            <ng-template let-facture pTemplate="selectedItem">
+                                {{ facture?.numeroFacture }} - {{ facture?.montant }} €
+                            </ng-template>
+                        </p-select>
+                    </div>
+
+                    <div class="field">
+                        <label>Montant payé</label>
+                        <input
+                            pInputText
+                            type="number"
+                            [(ngModel)]="paiement.montant"
+                            placeholder="Montant payé" />
+                    </div>
+
+                    <div class="field">
+                        <label>Date paiement</label>
+                        <input
+                            pInputText
+                            type="date"
+                            [(ngModel)]="paiement.datePaiement" />
+                    </div>
+
+                    <div class="field">
+                        <label>Mode paiement</label>
+                        <p-select
+                            [(ngModel)]="paiement.modePaiement"
+                            [options]="modesPaiement"
+                            optionLabel="label"
+                            optionValue="value"
+                            placeholder="Choisir mode"
+                            appendTo="body"
+                            class="w-full">
+                        </p-select>
+                    </div>
+
+                    <div class="actions">
+                        <p-button
+                            [label]="editMode ? 'Modifier' : 'Ajouter'"
+                            icon="pi pi-save"
+                            (onClick)="savePaiement()">
+                        </p-button>
+
+                        <p-button
+                            label="Annuler"
+                            icon="pi pi-times"
+                            severity="secondary"
+                            (onClick)="resetForm()">
+                        </p-button>
+                    </div>
+                </p-fluid>
+            </div>
+        </div>
+
+        <div class="col-span-12 lg:col-span-8">
+            <div class="card table-card">
+    <h3>Historique des paiements</h3>
+
+    <p-table
+        [value]="paiements"
+        [paginator]="true"
+        [rows]="5"
+        responsiveLayout="scroll">
+
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Numéro facture</th>
+                <th>Étudiant</th>
+                <th>Montant total</th>
+                <th>Date émission</th>
+                <th>Statut</th>
+                <th>Mode paiement</th>
+                <th>Montant payé</th>
+                <th>Date paiement</th>
+                <th>Imprimer facture</th>
+                <th>Actions</th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-item>
+            <tr>
+                <td>{{ item.facture?.numeroFacture }}</td>
+                <td>{{ getStudentName(item.student) }}</td>
+                <td>{{ item.facture?.montant }} €</td>
+                <td>{{ item.facture?.dateEmission }}</td>
+                <td>
+                    <p-tag
+                        [value]="item.facture?.statutPaiement"
+                        [severity]="getStatutSeverity(item.facture?.statutPaiement || '')">
+                    </p-tag>
+                </td>
+                <td>{{ item.modePaiement }}</td>
+                <td>{{ item.montant }} €</td>
+                <td>{{ item.datePaiement }}</td>
+                <td>
+                    <p-button
+                        icon="pi pi-print"
+                        severity="secondary"
+                        size="small"
+                        (onClick)="printFacture(item)">
+                    </p-button>
+                </td>
+                <td>
+                    <div class="table-actions">
+                        <p-button
+                            icon="pi pi-pencil"
+                            severity="info"
+                            size="small"
+                            (onClick)="editPaiement(item)">
+                        </p-button>
+
+                        <p-button
+                            icon="pi pi-trash"
+                            severity="danger"
+                            size="small"
+                            (onClick)="deletePaiement(item.id)">
+                        </p-button>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="10" class="text-center">
+                    Aucun paiement trouvé
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+        </div>
+    </div>
+</div>

@@ -13,7 +13,12 @@ public class DashboardReportingDTO {
 
     private double moyenneGenerale;
     private double tauxReussite;
+    private long facturesPayees;
+    private long facturesNonPayees;
+    private long facturesPartielles;
 
+    private double montantTotalPaye;
+    private double montantRestant;
     private List<StatsByFiliereDTO> studentsByFiliere;
     private List<MoyenneByFiliereDTO> moyenneByFiliere;
     private List<AbsenceByMatiereDTO> absencesByMatiere;
@@ -115,5 +120,44 @@ public class DashboardReportingDTO {
 
     public void setProgressionAcademique(List<ProgressionStudentDTO> progressionAcademique) {
         this.progressionAcademique = progressionAcademique;
+    }
+    public long getFacturesPayees() {
+        return facturesPayees;
+    }
+
+    public void setFacturesPayees(long facturesPayees) {
+        this.facturesPayees = facturesPayees;
+    }
+
+    public long getFacturesNonPayees() {
+        return facturesNonPayees;
+    }
+
+    public void setFacturesNonPayees(long facturesNonPayees) {
+        this.facturesNonPayees = facturesNonPayees;
+    }
+
+    public long getFacturesPartielles() {
+        return facturesPartielles;
+    }
+
+    public void setFacturesPartielles(long facturesPartielles) {
+        this.facturesPartielles = facturesPartielles;
+    }
+
+    public double getMontantTotalPaye() {
+        return montantTotalPaye;
+    }
+
+    public void setMontantTotalPaye(double montantTotalPaye) {
+        this.montantTotalPaye = montantTotalPaye;
+    }
+
+    public double getMontantRestant() {
+        return montantRestant;
+    }
+
+    public void setMontantRestant(double montantRestant) {
+        this.montantRestant = montantRestant;
     }
 }

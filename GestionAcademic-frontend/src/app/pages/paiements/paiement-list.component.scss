@@ -1,12 +1,12 @@
-.facture-page {
+.paiement-page {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 }
 
 .page-header {
-    background: linear-gradient(135deg, #eceef2, #e1e6ec);
-    color: white;
+    background: linear-gradient(135deg#eceef2, #e1e6ec);
+    color: rgb(243, 241, 246);
     border-radius: 24px;
     padding: 2rem;
     display: flex;
@@ -38,7 +38,7 @@
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 600;
-    color: #0c0511;
+    color: #0b0631;
 }
 
 .actions {

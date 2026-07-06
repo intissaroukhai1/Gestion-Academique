@@ -1,11 +1,13 @@
 package org.example.gestionacademic.service;
 
 import org.example.gestionacademic.dto.*;
+import org.example.gestionacademic.entity.Facture;
 import org.example.gestionacademic.entity.Note;
 import org.example.gestionacademic.entity.Student;
 import org.example.gestionacademic.repository.*;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,19 +19,25 @@ public class DashboardReportingService {
     private final MatiereRepository matiereRepository;
     private final NoteRepository noteRepository;
     private final AbsenceRepository absenceRepository;
+    private final PaiementRepository paiementRepository;
+    private final FactureRepository factureRepository;
 
     public DashboardReportingService(
             StudentRepository studentRepository,
             FiliereRepository filiereRepository,
             MatiereRepository matiereRepository,
             NoteRepository noteRepository,
-            AbsenceRepository absenceRepository
+            AbsenceRepository absenceRepository,
+            PaiementRepository paiementRepository,
+            FactureRepository factureRepository
     ) {
         this.studentRepository = studentRepository;
         this.filiereRepository = filiereRepository;
         this.matiereRepository = matiereRepository;
         this.noteRepository = noteRepository;
         this.absenceRepository = absenceRepository;
+        this.paiementRepository = paiementRepository;
+        this.factureRepository = factureRepository;
     }
 
     public DashboardReportingDTO getReporting() {
@@ -41,8 +49,14 @@ public class DashboardReportingService {
         dto.setTotalNotes(noteRepository.count());
         dto.setTotalAbsences(absenceRepository.count());
 
-        // Paiements pas encore développé
-        dto.setTotalPaiements(0);
+        dto.setTotalPaiements(paiementRepository.count());
+
+        dto.setFacturesPayees(factureRepository.countByStatutPaiement("PAYEE"));
+        dto.setFacturesNonPayees(factureRepository.countByStatutPaiement("NON_PAYEE"));
+        dto.setFacturesPartielles(factureRepository.countByStatutPaiement("PARTIELLE"));
+
+        dto.setMontantTotalPaye(calculateMontantTotalPaye());
+        dto.setMontantRestant(calculateMontantRestant());
 
         dto.setMoyenneGenerale(calculateMoyenneGenerale());
         dto.setTauxReussite(calculateTauxReussite());
@@ -69,6 +83,7 @@ public class DashboardReportingService {
         }
 
         double moyenne = somme / notes.size();
+
         return Math.round(moyenne * 100.0) / 100.0;
     }
 
@@ -102,6 +117,7 @@ public class DashboardReportingService {
         }
 
         double taux = ((double) admis / students.size()) * 100;
+
         return Math.round(taux * 100.0) / 100.0;
     }
 
@@ -111,7 +127,10 @@ public class DashboardReportingService {
         filiereRepository.findAll().forEach(filiere -> {
             long total = studentRepository.findAll()
                     .stream()
-                    .filter(s -> s.getFiliere() != null && s.getFiliere().getId().equals(filiere.getId()))
+                    .filter(student ->
+                            student.getFiliere() != null
+                                    && student.getFiliere().getId().equals(filiere.getId())
+                    )
                     .count();
 
             result.add(new StatsByFiliereDTO(filiere.getNom(), total));
@@ -126,7 +145,10 @@ public class DashboardReportingService {
         filiereRepository.findAll().forEach(filiere -> {
             List<Student> students = studentRepository.findAll()
                     .stream()
-                    .filter(s -> s.getFiliere() != null && s.getFiliere().getId().equals(filiere.getId()))
+                    .filter(student ->
+                            student.getFiliere() != null
+                                    && student.getFiliere().getId().equals(filiere.getId())
+                    )
                     .toList();
 
             double somme = 0;
@@ -156,7 +178,10 @@ public class DashboardReportingService {
         matiereRepository.findAll().forEach(matiere -> {
             long total = absenceRepository.findAll()
                     .stream()
-                    .filter(a -> a.getMatiere() != null && a.getMatiere().getId().equals(matiere.getId()))
+                    .filter(absence ->
+                            absence.getMatiere() != null
+                                    && absence.getMatiere().getId().equals(matiere.getId())
+                    )
                     .count();
 
             result.add(new AbsenceByMatiereDTO(matiere.getNom(), total));
@@ -194,5 +219,35 @@ public class DashboardReportingService {
         }
 
         return result;
+    }
+
+    private double calculateMontantTotalPaye() {
+        BigDecimal total = paiementRepository.getTotalPaiements();
+
+        if (total == null) {
+            return 0;
+        }
+
+        return Math.round(total.doubleValue() * 100.0) / 100.0;
+    }
+
+    private double calculateMontantRestant() {
+        double totalRestant = 0;
+
+        for (Facture facture : factureRepository.findAll()) {
+            BigDecimal totalPaid = paiementRepository.getTotalPaidByFactureId(facture.getId());
+
+            if (totalPaid == null) {
+                totalPaid = BigDecimal.ZERO;
+            }
+
+            BigDecimal restant = facture.getMontant().subtract(totalPaid);
+
+            if (restant.compareTo(BigDecimal.ZERO) > 0) {
+                totalRestant += restant.doubleValue();
+            }
+        }
+
+        return Math.round(totalRestant * 100.0) / 100.0;
     }
 }
