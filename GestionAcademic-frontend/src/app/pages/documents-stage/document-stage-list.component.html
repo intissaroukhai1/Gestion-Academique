@@ -1,0 +1,154 @@
+<div class="document-stage-page">
+    <div class="page-header">
+        <div>
+            <h2>Gestion des documents de stage</h2>
+            <p>Dépôt, validation et suivi des documents de stage des étudiants</p>
+        </div>
+
+        <p-button label="Actualiser" icon="pi pi-refresh" severity="secondary" (onClick)="loadDocuments()">
+        </p-button>
+    </div>
+
+    <div class="grid grid-cols-12 gap-6">
+        <div class="col-span-12 lg:col-span-4">
+            <div class="card form-card">
+                <h3>{{ editMode ? 'Modifier document' : 'Nouveau document' }}</h3>
+
+                <p-fluid>
+                    <div class="field">
+                        <label>Étudiant</label>
+                        <p-select [(ngModel)]="documentStage.student" [options]="students" optionLabel="firstName"
+                            placeholder="Choisir un étudiant" appendTo="body" class="w-full">
+
+                            <ng-template let-student pTemplate="item">
+                                {{ student.firstName }} {{ student.lastName }}
+                            </ng-template>
+
+                            <ng-template let-student pTemplate="selectedItem">
+                                {{ student?.firstName }} {{ student?.lastName }}
+                            </ng-template>
+                        </p-select>
+                    </div>
+
+                    <div class="field">
+                        <label>Titre</label>
+                        <input pInputText [(ngModel)]="documentStage.titre"
+                            placeholder="Ex : Convention de stage 2026" />
+                    </div>
+
+                    <div class="field">
+                        <label>Type document</label>
+                        <p-select [(ngModel)]="documentStage.typeDocument" [options]="typesDocuments"
+                            optionLabel="label" optionValue="value" appendTo="body" class="w-full">
+                        </p-select>
+                    </div>
+
+                    <div class="field" *ngIf="!editMode">
+                        <label>Fichier PDF</label>
+                        <input type="file" accept="application/pdf" (change)="onFileSelected($event)"
+                            class="file-input" />
+
+                        <small *ngIf="selectedFile">
+                            Fichier sélectionné : {{ selectedFile.name }}
+                        </small>
+                    </div>
+
+                    <div class="field">
+                        <label>Date dépôt</label>
+                        <input pInputText type="date" [(ngModel)]="documentStage.dateDepot" />
+                    </div>
+
+                    <div class="field">
+                        <label>Statut</label>
+                        <p-select [(ngModel)]="documentStage.statut" [options]="statuts" optionLabel="label"
+                            optionValue="value" appendTo="body" class="w-full">
+                        </p-select>
+                    </div>
+
+                    <div class="field">
+                        <label>Commentaire</label>
+                        <textarea pTextarea rows="3" [(ngModel)]="documentStage.commentaire"
+                            placeholder="Commentaire ou remarque">
+                        </textarea>
+                    </div>
+
+                    <div class="actions">
+                        <p-button [label]="editMode ? 'Modifier' : 'Ajouter'" icon="pi pi-save"
+                            (onClick)="saveDocument()">
+                        </p-button>
+
+                        <p-button label="Annuler" icon="pi pi-times" severity="secondary" (onClick)="resetForm()">
+                        </p-button>
+                    </div>
+                </p-fluid>
+            </div>
+        </div>
+
+        <div class="col-span-12 lg:col-span-8">
+            <div class="card table-card">
+                <h3>Liste des documents de stage</h3>
+
+                <p-table [value]="documents" [paginator]="true" [rows]="5" responsiveLayout="scroll">
+
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Étudiant</th>
+                            <th>Titre</th>
+                            <th>Type</th>
+                            <th>Fichier</th>
+                            <th>Date dépôt</th>
+                            <th>Statut</th>
+                            <th>Commentaire</th>
+                            <th>Actions</th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-item>
+                        <tr>
+                            <td>{{ getStudentName(item.student) }}</td>
+                            <td>{{ item.titre }}</td>
+                            <td>{{ getTypeLabel(item.typeDocument) }}</td>
+                            <td>{{ item.nomFichier }}</td>
+                            <td>{{ item.dateDepot }}</td>
+                            <td>
+                                <p-tag [value]="item.statut" [severity]="getSeverity(item.statut)">
+                                </p-tag>
+                            </td>
+                            <td>{{ item.commentaire }}</td>
+                            <td>
+                                <div class="table-actions">
+                                    <p-button icon="pi pi-check" severity="success" size="small"
+                                        (onClick)="valider(item)">
+                                    </p-button>
+
+                                    <p-button icon="pi pi-times" severity="danger" size="small"
+                                        (onClick)="refuser(item)">
+                                    </p-button>
+
+                                    <p-button icon="pi pi-pencil" severity="info" size="small"
+                                        (onClick)="editDocument(item)">
+                                    </p-button>
+
+                                    <p-button icon="pi pi-trash" severity="danger" size="small"
+                                        (onClick)="deleteDocument(item.id)">
+                                    </p-button>
+                                    <p-button icon="pi pi-download" severity="secondary" size="small"
+                                        (onClick)="downloadDocument(item)">
+                                    </p-button>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="8" class="text-center">
+                                Aucun document de stage trouvé
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+    </div>
+</div>

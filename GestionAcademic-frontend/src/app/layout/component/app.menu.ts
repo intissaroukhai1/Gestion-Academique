@@ -69,6 +69,11 @@ export class AppMenu {
     label: 'Paiements',
     icon: 'pi pi-fw pi-credit-card',
     routerLink: ['/paiements']
+},
+{
+    label: 'Documents Stage',
+    icon: 'pi pi-fw pi-folder-open',
+    routerLink: ['/documents-stage']
 }
         ]
     },
