@@ -69,6 +69,11 @@ export const appRoutes: Routes = [
         import('./app/pages/documents-stage/document-stage-list.component')
             .then(m => m.DocumentStageListComponent)
 },
+{
+    path: 'menus',
+    loadComponent: () =>
+        import('./app/pages/menus/menu-list.component').then(m => m.MenuListComponent)
+},
             { path: 'uikit', loadChildren: () => import('./app/pages/uikit/uikit.routes') },
             { path: 'documentation', component: Documentation },
             { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') }

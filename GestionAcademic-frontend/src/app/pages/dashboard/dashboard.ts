@@ -27,6 +27,7 @@ export class Dashboard implements OnInit {
     progressionChart: any;
 
     chartOptions: any;
+    doughnutOptions: any;
 
     loading = false;
 
@@ -39,14 +40,14 @@ export class Dashboard implements OnInit {
         this.loading = true;
 
         this.dashboardService.getReporting().subscribe({
-            next: (data) => {
+            next: (data: DashboardReporting) => {
                 this.reporting = data;
                 this.prepareCards();
                 this.prepareCharts();
                 this.loading = false;
                 this.cdr.detectChanges();
             },
-            error: (error) => {
+            error: (error: any) => {
                 console.error('Erreur chargement reporting : ', error);
                 this.loading = false;
                 this.cdr.detectChanges();
@@ -73,27 +74,6 @@ export class Dashboard implements OnInit {
                 icon: 'pi pi-sitemap',
                 color: 'green',
                 subtitle: 'Parcours disponibles'
-            },
-            {
-                label: 'Matières',
-                value: this.reporting.totalMatieres,
-                icon: 'pi pi-book',
-                color: 'purple',
-                subtitle: 'Unités enseignées'
-            },
-            {
-                label: 'Notes',
-                value: this.reporting.totalNotes,
-                icon: 'pi pi-star',
-                color: 'orange',
-                subtitle: 'Évaluations saisies'
-            },
-            {
-                label: 'Absences',
-                value: this.reporting.totalAbsences,
-                icon: 'pi pi-calendar-times',
-                color: 'red',
-                subtitle: 'Absences enregistrées'
             },
             {
                 label: 'Paiements',
@@ -189,6 +169,21 @@ export class Dashboard implements OnInit {
                 x: {
                     grid: {
                         display: false
+                    }
+                }
+            }
+        };
+
+        this.doughnutOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '65%',
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true,
+                        boxWidth: 10
                     }
                 }
             }

@@ -6,7 +6,7 @@
             <h1>Statistiques et Reporting</h1>
             <p>
                 Tableau de bord dynamique pour suivre les étudiants, les filières,
-                les notes, les absences et la progression académique.
+                les paiements et la progression académique.
             </p>
         </div>
 
@@ -15,8 +15,8 @@
             icon="pi pi-refresh"
             severity="secondary"
             [loading]="loading"
-            (onClick)="loadReporting()"
-        ></p-button>
+            (onClick)="loadReporting()">
+        </p-button>
     </div>
 
     <div class="kpi-grid">
@@ -36,6 +36,7 @@
     </div>
 
     <div class="charts-grid">
+
         <div class="modern-card chart-card">
             <div class="card-header">
                 <div>
@@ -48,8 +49,8 @@
                 <p-chart
                     type="bar"
                     [data]="studentsByFiliereChart"
-                    [options]="chartOptions"
-                ></p-chart>
+                    [options]="chartOptions">
+                </p-chart>
             </div>
         </div>
 
@@ -65,8 +66,8 @@
                 <p-chart
                     type="bar"
                     [data]="moyenneByFiliereChart"
-                    [options]="chartOptions"
-                ></p-chart>
+                    [options]="chartOptions">
+                </p-chart>
             </div>
         </div>
 
@@ -78,12 +79,12 @@
                 </div>
             </div>
 
-            <div class="chart-container">
+            <div class="small-doughnut-container">
                 <p-chart
                     type="doughnut"
                     [data]="absencesByMatiereChart"
-                    
-                ></p-chart>
+                    [options]="doughnutOptions">
+                </p-chart>
             </div>
         </div>
 
@@ -99,10 +100,11 @@
                 <p-chart
                     type="line"
                     [data]="progressionChart"
-                    [options]="chartOptions"
-                ></p-chart>
+                    [options]="chartOptions">
+                </p-chart>
             </div>
         </div>
+
     </div>
 
     <div class="modern-card table-card">
@@ -141,8 +143,8 @@
                         <td>
                             <p-tag
                                 [value]="item.resultat"
-                                [severity]="getSeverity(item.resultat)"
-                            ></p-tag>
+                                [severity]="getSeverity(item.resultat)">
+                            </p-tag>
                         </td>
                     </tr>
                 </tbody>

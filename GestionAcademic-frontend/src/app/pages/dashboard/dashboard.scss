@@ -37,9 +37,10 @@
     font-weight: 600;
 }
 
+/* KPI CARDS */
 .kpi-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 1.25rem;
 }
 
@@ -57,10 +58,16 @@
     box-shadow: 0 22px 45px rgba(15, 23, 42, 0.12);
 }
 
+.kpi-card {
+    min-height: 165px;
+}
+
 .kpi-content {
+    height: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 1rem;
 }
 
 .kpi-label {
@@ -73,6 +80,7 @@
     margin: 0.5rem 0;
     font-size: 2rem;
     color: #0f172a;
+    font-weight: 800;
 }
 
 .kpi-card p {
@@ -89,6 +97,7 @@
     align-items: center;
     justify-content: center;
     font-size: 1.4rem;
+    flex-shrink: 0;
 }
 
 .kpi-icon.blue {
@@ -131,10 +140,15 @@
     color: #0f766e;
 }
 
+/* CHARTS */
 .charts-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.5rem;
+}
+
+.chart-card {
+    min-height: 420px;
 }
 
 .card-header {
@@ -147,6 +161,7 @@
     margin: 0;
     color: #0f172a;
     font-size: 1.2rem;
+    font-weight: 800;
 }
 
 .card-header p {
@@ -155,13 +170,35 @@
     font-size: 0.9rem;
 }
 
+/* Bar charts et line charts */
 .chart-container {
-    width: 320px;
     height: 320px;
+    width: 100%;
+    position: relative;
+}
+
+/* Doughnut charts petits */
+.small-doughnut-container {
+    width: 160px !important;
+    height: 160px !important;
+    max-width: 160px !important;
+    max-height: 160px !important;
     margin: 0 auto;
     position: relative;
 }
 
+.small-doughnut-container p-chart {
+    display: block;
+    width: 160px !important;
+    height: 160px !important;
+}
+
+:host ::ng-deep .small-doughnut-container canvas {
+    width: 160px !important;
+    height: 160px !important;
+}
+
+/* TABLE */
 .table-card {
     overflow: hidden;
 }
@@ -207,7 +244,38 @@
     font-weight: 700;
 }
 
+/* RESPONSIVE */
+@media (max-width: 1500px) {
+    .kpi-grid {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .kpi-card {
+        padding: 1.2rem;
+    }
+
+    .kpi-card h2 {
+        font-size: 1.8rem;
+    }
+
+    .kpi-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 1.2rem;
+    }
+}
+
 @media (max-width: 1200px) {
+    .kpi-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 900px) {
     .kpi-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -219,8 +287,32 @@
         align-items: flex-start;
     }
 
-    .kpi-grid,
+    .dashboard-hero h1 {
+        font-size: 1.8rem;
+    }
+
+    .kpi-grid {
+        grid-template-columns: 1fr;
+    }
+
     .charts-grid {
         grid-template-columns: 1fr;
+    }
+
+    .small-doughnut-container {
+        width: 140px !important;
+        height: 140px !important;
+        max-width: 140px !important;
+        max-height: 140px !important;
+    }
+
+    .small-doughnut-container p-chart {
+        width: 140px !important;
+        height: 140px !important;
+    }
+
+    :host ::ng-deep .small-doughnut-container canvas {
+        width: 140px !important;
+        height: 140px !important;
     }
 }
